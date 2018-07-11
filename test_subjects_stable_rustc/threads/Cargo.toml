@@ -1,0 +1,12 @@
+[package]
+name = "threads"
+version = "0.1.0"
+authors = [
+    "Bart van Schaick <bvschaick@gmail.com>",
+    "Dominique van Cuilenborg <d.vancuilenborg@hotmail.com>",
+    "Fabian Stelmach <fabianstelmach@gmail.com>",
+    "Aron Zwaan <aronzwaan@gmail.com>",
+    "Erwin Gribnau <erwin.gribnau@technolution.nl>"
+]
+
+[dependencies]

@@ -1,0 +1,36 @@
+[workspace]
+members = [
+	"lib/callgraph",     
+	"lib/panic_analysis",     
+	"lib/test_common",
+]
+
+[package]
+name = "rustig"
+description = "A tool to detect code paths leading to Rust's panic handler"
+version = "0.1.0"
+license = "MIT OR Apache-2.0"
+keywords = ["cli", "compilation", "proof"]
+homepage = "https://github.com/Technolution/rustig"
+repository = "https://github.com/Technolution/rustig"
+documentation = "https://github.com/Technolution/rustig"
+authors = [
+    "Bart van Schaick <bvschaick@gmail.com>",
+    "Dominique van Cuilenborg <d.vancuilenborg@hotmail.com>",
+    "Fabian Stelmach <fabianstelmach@gmail.com>",
+    "Aron Zwaan <aronzwaan@gmail.com>",
+    "Erwin Gribnau <erwin.gribnau@technolution.nl>"
+]
+
+[dependencies]
+clap = "2.31.2"
+callgraph = { path = "lib/callgraph", version = "0.1.0" }
+panic_analysis = { path = "lib/panic_analysis", version = "0.1.0" }
+toml = "0.4.6"
+serde = "1.0.64"
+serde_derive = "1.0.64"
+error-chain = "0.11.0"
+
+[dev-dependencies]
+assert_cli = "0.5"
+test_common = { path = "lib/test_common", version = "0.1.0" }

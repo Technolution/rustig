@@ -1,0 +1,9 @@
+[workspace]
+
+members = [
+    "hello_world",
+    "threads",
+]
+
+[profile.release]
+debug = true

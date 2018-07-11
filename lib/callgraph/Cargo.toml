@@ -1,0 +1,27 @@
+[package]
+name = "callgraph"
+version = "0.1.0"
+authors = [
+    "Bart van Schaick <bvschaick@gmail.com>",
+    "Dominique van Cuilenborg <d.vancuilenborg@hotmail.com>",
+    "Fabian Stelmach <fabianstelmach@gmail.com>",
+    "Aron Zwaan <aronzwaan@gmail.com>",
+    "Erwin Gribnau <erwin.gribnau@technolution.nl>"
+]
+workspace = "../.."
+
+[dependencies]
+addr2line = "0.6.0"
+petgraph = "0.4.12"
+object = "0.7.0"
+goblin = "0.0.13"
+gimli = "0.15.0"
+capstone = { git = "https://github.com/capstone-rust/capstone-rs.git", rev = "dc10578aa27414afc93f0a87959b2f0c22dc66c3" }
+elf = "0.0.10"
+error-chain = "0.11.0"
+fallible-iterator = "0.1.2"
+byteorder = "1.2.3"
+
+[dev-dependencies]
+test_common = { path = "../../lib/test_common" }
+

@@ -1,0 +1,16 @@
+[package]
+name = "test_common"
+version = "0.1.0"
+authors = [
+    "Bart van Schaick <bvschaick@gmail.com>",
+    "Dominique van Cuilenborg <d.vancuilenborg@hotmail.com>",
+    "Fabian Stelmach <fabianstelmach@gmail.com>",
+    "Aron Zwaan <aronzwaan@gmail.com>",
+    "Erwin Gribnau <erwin.gribnau@technolution.nl>"
+]
+
+[dependencies]
+gimli = "0.15.0"
+object = "0.7.0"
+elf = "0.0.10"
+capstone = { git = "https://github.com/capstone-rust/capstone-rs.git", rev = "dc10578aa27414afc93f0a87959b2f0c22dc66c3" }

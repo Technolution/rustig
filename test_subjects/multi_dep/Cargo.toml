@@ -1,0 +1,16 @@
+[package]
+name = "multi_dep"
+version = "0.1.0"
+authors = [
+    "Bart van Schaick <bvschaick@gmail.com>",
+    "Dominique van Cuilenborg <d.vancuilenborg@hotmail.com>",
+    "Fabian Stelmach <fabianstelmach@gmail.com>",
+    "Aron Zwaan <aronzwaan@gmail.com>",
+    "Erwin Gribnau <erwin.gribnau@technolution.nl>"
+]
+
+[dependencies]
+dep = { path = "../dep" }
+
+simplelog = "0.5.2"
+log = "*"

@@ -1,0 +1,20 @@
+[workspace]
+
+members = [
+    "hello_world",
+    "empty",
+    "unwrap",
+    "binary_search",
+    "lib_calls",
+    "trait_invocation",
+    "capturing_closure_invocation",
+    "multi_dep",
+    "dep",
+    "indexing",
+    "direct",
+    "indirect",
+    "arithmetic",
+]
+
+[profile.release]
+debug = true
