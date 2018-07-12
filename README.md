@@ -127,6 +127,10 @@ For dynamic invocations this tool makes assumptions. The assumption made is that
 implementation is loaded using the Load Effective Address call, all functions in that trait are considered used. All 
 paths leading to panic! from one of those functions (whether actually used or not) will be reported. 
 
+Currently, the tool is only able to build callgraphs for x86_64 ELF binaries. The reason for this limitation is that
+building the callgraph requires reading the assembly and finding jump/call instructions (like `callq` and `lea`). This 
+algorithm is currently only implemented for x86 instruction sets. 
+
 
 ## Results
 
