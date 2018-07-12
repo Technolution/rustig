@@ -60,6 +60,7 @@ use std::borrow::Borrow;
 use std::cell::RefCell;
 use std::rc::Rc;
 use std::ops::Deref;
+use std::io::Write;
 
 /// Set of options on how to format the output.
 pub struct OutputOptions {
@@ -195,7 +196,12 @@ impl OutputStream for JsonConsoleOutputStream {
                         }).collect()
                 ),
             });
-            json::to_writer_pretty (stream.lock(), &json).unwrap();
+            {
+                let mut stream = stream.lock();
+                write!(&mut stream, "\n\n").unwrap();
+                json::to_writer_pretty (&mut stream, &json).unwrap();
+                write!(&mut stream, "\n\n").unwrap();
+            }
         }
     }
 }
