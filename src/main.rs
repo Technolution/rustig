@@ -10,12 +10,17 @@
 //! obtained by running `rustig --help` on a build or by visiting the 
 //! [Github documentation](https://github.com/Technolution/rustig).
 //! 
+
+#![recursion_limit="128"]
+
 #[macro_use]
 extern crate serde_derive;
 extern crate panic_analysis;
 extern crate toml;
 #[macro_use]
 extern crate error_chain;
+#[macro_use]
+extern crate serde_json;
 
 mod cmd_args;
 mod config_file;
