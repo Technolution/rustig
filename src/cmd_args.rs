@@ -69,6 +69,7 @@ pub fn get_args() -> Result<(AnalysisOptions, OutputOptions)> {
     let output_options = OutputOptions {
         verbose: cmd_matches.is_present("verbose"),
         silent: cmd_matches.is_present("silent"),
+        json: cmd_matches.is_present("json"),
     };
 
     Ok((rdp_options, output_options))
@@ -107,6 +108,13 @@ fn get_app_definition<'a, 'b>() -> App<'a, 'b> {
                 .help("Turn on verbose mode for full stack traces of panic calls"),
         )
         .arg(
+            Arg::with_name("json")
+                .short("j")
+                .long("json")
+                .conflicts_with("silent")
+                .help("Output full stack traces of panic calls into JSON"),
+        )
+        .arg(
             Arg::with_name("config")
                 .long("config")
                 .help("Path to RDP configuration file (default: rdp.toml)")
@@ -123,6 +131,7 @@ fn get_app_definition<'a, 'b>() -> App<'a, 'b> {
                 .short("s")
                 .long("silent")
                 .conflicts_with("verbose")
+                .conflicts_with("json")
                 .help("Turn on silent mode to not print anything"),
         )
         .arg(

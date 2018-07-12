@@ -67,6 +67,8 @@ pub struct OutputOptions {
     pub silent: bool,
     /// The verbose flag for command line output.
     pub verbose: bool,
+    /// The JSON flag for command line output.
+    pub json: bool,
 }
 
 /// A struct consisting of a vector containing the output streams
@@ -205,7 +207,9 @@ fn get_output_streams(options: &OutputOptions) -> Box<OutputStreamsCollection> {
         return Box::new(OutputStreamsCollection { streams: vec![] });
     }
 
-    if options.verbose {
+    if options.json {
+        output_stream_vec.push(Box::new(JsonConsoleOutputStream {}));
+    } else if options.verbose {
         output_stream_vec.push(Box::new(VerboseConsoleOutputStream {}));
     } else {
         output_stream_vec.push(Box::new(SimpleConsoleOutputStream {}));
