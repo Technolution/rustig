@@ -42,7 +42,7 @@ pub fn main() {
     // Parse cmd arguments
     let (cmd_args, output_options) = match cmd_args::get_args() {
         Err(e) => {
-            println!("{}", e);
+            eprintln!("{}", e);
             process::exit(101);
         }
         Ok(r) => r,
@@ -51,7 +51,7 @@ pub fn main() {
     // Execute analysis
     match panic_analysis::find_panics(&cmd_args) {
         Err(e) => {
-            println!("{}", e);
+            eprintln!("{}", e);
             process::exit(101);
         }
         Ok(collection) => {
