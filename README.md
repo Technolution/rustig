@@ -39,7 +39,7 @@ Their thesis about this project can be found in the repo at Delft University:
 ## Installing the latest version from source
 You can use *cargo* to install our binary directly from the sources in the Git-repository:
 ```
-cargo install --git https://github.com/Technolution/rustig
+cargo install --git https://github.com/Technolution/rustig rustig
 ```
 ## Using the tool
 
