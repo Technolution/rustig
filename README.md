@@ -6,6 +6,10 @@ This software can be used to check whether your Rust software has any paths lead
 This tool is intended to be used by developers during coding and on CI systems to continuously check for possible 
 _panic_'s.
 
+## Code Status
+
+[![Build Status](https://api.travis-ci.com/Technolution/rustig.svg?branch=master)](https://travis-ci.com/Technolution/rustig)
+
 ## The name
 The name _rustig!_ comes from the Dutch word _rustig_. Which translates to 'calm down' or equivalent in English. 
 See it as the opposite of 'panic'. **Don't panic!**.
