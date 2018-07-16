@@ -8,7 +8,7 @@ members = [
 [package]
 name = "rustig"
 description = "A tool to detect code paths leading to Rust's panic handler"
-version = "0.1.0"
+version = "0.2.0"
 license = "MIT OR Apache-2.0"
 keywords = ["cli", "compilation", "proof"]
 homepage = "https://github.com/Technolution/rustig"
