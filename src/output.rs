@@ -11,7 +11,7 @@
 //! This module is concerned with formatting and outputting panic traces from [panic_analysis](../panic_analysis/fn.find_panics.html) to the standard output.
 //!
 //! ## Output modes
-//! The library offers two different output modes:
+//! The library offers three different output modes:
 //!
 //! ### 1. Simple
 //! The simple output mode prints the most relevant information about the panic trace. The output consists of one line per _panic_ trace.
