@@ -57,7 +57,7 @@ pub fn get_args() -> Result<(AnalysisOptions, OutputOptions)> {
 
     let file_options = parse_config(config_opt.unwrap_or("rustig.toml"), required)?;
 
-    let rdp_options = AnalysisOptions {
+    let rustig_options = AnalysisOptions {
         binary_path: Some(cmd_matches.value_of("binary").unwrap().to_string()), // Required by clap, can safely be unwrapped.
         crate_names,
         whitelisted_functions: file_options.function_whitelists,
@@ -69,10 +69,10 @@ pub fn get_args() -> Result<(AnalysisOptions, OutputOptions)> {
     let output_options = OutputOptions {
         verbose: cmd_matches.is_present("verbose"),
         silent: cmd_matches.is_present("silent"),
-        json: cmd_matches.is_present("json"),
+        json: cmd_matches.is_present("json-stream"),
     };
 
-    Ok((rdp_options, output_options))
+    Ok((rustig_options, output_options))
 }
 
 fn get_app_definition<'a, 'b>() -> App<'a, 'b> {
@@ -108,16 +108,15 @@ fn get_app_definition<'a, 'b>() -> App<'a, 'b> {
                 .help("Turn on verbose mode for full stack traces of panic calls"),
         )
         .arg(
-            Arg::with_name("json")
-                .short("j")
-                .long("json")
+            Arg::with_name("json-stream")
+                .long("json-stream")
                 .conflicts_with("silent")
                 .help("Output full stack traces of panic calls into JSON"),
         )
         .arg(
             Arg::with_name("config")
                 .long("config")
-                .help("Path to RDP configuration file (default: rdp.toml)")
+                .help("Path to rustig! configuration file (default: rustig.toml)")
                 .takes_value(true),
         )
         .arg(
@@ -141,7 +140,7 @@ fn get_app_definition<'a, 'b>() -> App<'a, 'b> {
                 .value_name("CALLGRAPH")
                 .long("callgraph")
                 .short("g")
-                .help("Write a callgraph of the given binary to a file. The output filename will be: `rdp-callgraph-{projectname}-{type}`, where `type` is either `full` or `filtered`. The full callgraph contains all function calls that are detected by RDP, while filtered callgraph only contains paths that possibly lead to panic calls")
+                .help("Write a callgraph of the given binary to a file. The output filename will be: `rustig-callgraph-{projectname}-{type}`, where `type` is either `full` or `filtered`. The full callgraph contains all function calls that are detected by rustig!, while filtered callgraph only contains paths that possibly lead to panic calls")
                 .possible_values(&CALL_GRAPH_BUILD_MODES),
         )
 }
