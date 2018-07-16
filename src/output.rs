@@ -44,11 +44,23 @@
 //!  3: rust_begin_unwind (stdlib@1.26.2)
 //!          at /checkout/src/libstd/panicking.rs:325
 //!  4: std::panicking::begin_panic_fmt (stdlib@1.26.2)
+//!
+//! ### 3. JSON.
+//! The same amount of information as verbose, but formatted as JSON.
 //! ```
 extern crate callgraph;
 extern crate panic_analysis;
+extern crate serde_json;
 
 use panic_analysis::PanicCallsCollection;
+use panic_analysis::PanicPattern;
+use serde_json as json;
+use std::io;
+use std::borrow::Borrow;
+use std::cell::RefCell;
+use std::rc::Rc;
+use std::ops::Deref;
+use std::io::Write;
 
 /// Set of options on how to format the output.
 pub struct OutputOptions {
@@ -56,6 +68,8 @@ pub struct OutputOptions {
     pub silent: bool,
     /// The verbose flag for command line output.
     pub verbose: bool,
+    /// The JSON flag for command line output.
+    pub json: bool,
 }
 
 /// A struct consisting of a vector containing the output streams
@@ -101,6 +115,97 @@ impl OutputStream for VerboseConsoleOutputStream {
     }
 }
 
+/// Struct that handles JSON console output formatting
+#[derive(Debug, Clone)]
+struct JsonConsoleOutputStream {}
+
+impl OutputStream for JsonConsoleOutputStream {
+    fn print_output(&self, panic_calls: &PanicCallsCollection) {
+        let stream = io::stdout();
+        for (i, trace) in panic_calls.calls.iter().enumerate() {
+            let json = json!({
+                "index" : i,
+                "pattern" : match trace.pattern.borrow().deref() {
+                    PanicPattern::Unrecognized => "unrecognized",
+                    PanicPattern::DirectCall => "direct_call",
+                    PanicPattern::Unwrap => "unwrap",
+                    PanicPattern::Indexing => "indexing",
+                    PanicPattern::Arithmetic => "arithmetic",
+                },
+                "message" : if let Some(message) = &trace.message { message.clone().into() } else { json::Value::Null },
+                "dynamic_invocation" : trace.contains_dynamic_invocation,
+                "backtrace" : json::Value::Array(
+                    trace.backtrace.iter().enumerate().map(|(i, backtrace)| {
+                            let backtrace = backtrace.borrow();
+                            let procedure = backtrace.procedure.deref().borrow();
+                            let invocation = backtrace.outgoing_invocation.as_ref().map(Rc::deref).map(RefCell::borrow);
+                            json!({
+                                "index" : i,
+                                "procedure" : json!({
+                                    "name" : procedure.name.clone(),
+                                    "linkage_name" : procedure.linkage_name.clone(),
+                                    "linkage_name_demangled" : procedure.linkage_name_demangled.clone(),
+                                    "crate" : json!({
+                                        "name" : procedure.defining_crate.name.clone(),
+                                        "version" : if let Some(ref version) = &procedure.defining_crate.version { version.clone().into() } else { json::Value::Null },
+                                    }),
+                                    "location" : if let Some(ref location) = &procedure.location {
+                                            json!({
+                                                "file" : location.file.clone(),
+                                                "line" : location.line,
+                                            })
+                                        } else {
+                                            json::Value::Null
+                                        },
+                                    "is_entry" : procedure.attributes.entry_point,
+                                    "is_reachable" : procedure.attributes.reachable_from_entry_point,
+                                    "is_panic" : procedure.attributes.is_panic,
+                                    "is_panic_origin" : procedure.attributes.is_panic_origin,
+                                    "is_whitelisted" : procedure.attributes.whitelisted,
+                                }),
+                                "invocation" :
+                                    if let Some(invocation) = invocation {
+                                        json!({
+                                            "type" : match invocation.invocation_type {
+                                                callgraph::InvocationType::Direct => "direct",
+                                                callgraph::InvocationType::ProcedureReference => "procedure",
+                                                callgraph::InvocationType::VTable => "vtable",
+                                                callgraph::InvocationType::Jump => "jump",
+                                            },
+                                            "is_whitelisted" : invocation.attributes.whitelisted,
+                                            "frames" : json::Value::Array(
+                                                invocation.frames.iter().enumerate().map(|(i, frame)| {
+                                                    json!({
+                                                        "index" : i,
+                                                        "function" : frame.function_name.clone(),
+                                                        "location" : json!({
+                                                            "file" : frame.location.file.clone(),
+                                                            "line" : frame.location.line,
+                                                        }),
+                                                        "crate" : json!({
+                                                            "name" : frame.defining_crate.name.clone(),
+                                                            "version" : if let Some(ref version) = &frame.defining_crate.version { version.clone().into() } else { json::Value::Null },
+                                                        }),
+                                                    })
+                                                }).collect()),
+                                        })
+                                    } else {
+                                        json::Value::Null
+                                    },
+                            })
+                        }).collect()
+                ),
+            });
+            {
+                let mut stream = stream.lock();
+                write!(&mut stream, "\n\n").unwrap();
+                json::to_writer_pretty (&mut stream, &json).unwrap();
+                write!(&mut stream, "\n\n").unwrap();
+            }
+        }
+    }
+}
+
 fn get_output_streams(options: &OutputOptions) -> Box<OutputStreamsCollection> {
     let mut output_stream_vec: Vec<Box<OutputStream>> = Vec::new();
 
@@ -108,7 +213,9 @@ fn get_output_streams(options: &OutputOptions) -> Box<OutputStreamsCollection> {
         return Box::new(OutputStreamsCollection { streams: vec![] });
     }
 
-    if options.verbose {
+    if options.json {
+        output_stream_vec.push(Box::new(JsonConsoleOutputStream {}));
+    } else if options.verbose {
         output_stream_vec.push(Box::new(VerboseConsoleOutputStream {}));
     } else {
         output_stream_vec.push(Box::new(SimpleConsoleOutputStream {}));

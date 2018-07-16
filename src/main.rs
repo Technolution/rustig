@@ -10,12 +10,17 @@
 //! obtained by running `rustig --help` on a build or by visiting the 
 //! [Github documentation](https://github.com/Technolution/rustig).
 //! 
+
+#![recursion_limit="128"]
+
 #[macro_use]
 extern crate serde_derive;
 extern crate panic_analysis;
 extern crate toml;
 #[macro_use]
 extern crate error_chain;
+#[macro_use]
+extern crate serde_json;
 
 mod cmd_args;
 mod config_file;
@@ -42,7 +47,7 @@ pub fn main() {
     // Parse cmd arguments
     let (cmd_args, output_options) = match cmd_args::get_args() {
         Err(e) => {
-            println!("{}", e);
+            eprintln!("{}", e);
             process::exit(101);
         }
         Ok(r) => r,
@@ -51,7 +56,7 @@ pub fn main() {
     // Execute analysis
     match panic_analysis::find_panics(&cmd_args) {
         Err(e) => {
-            println!("{}", e);
+            eprintln!("{}", e);
             process::exit(101);
         }
         Ok(collection) => {
