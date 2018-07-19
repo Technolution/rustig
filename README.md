@@ -27,8 +27,8 @@ paths leading from your code to the panic handler.
 The idea for this tool was born while we were on some code for Cortex-M processors. Using `objdump` and `grep` you can 
 easily prove that there is no `panic!` in the code, because the optimizer has removed those functions from the resulting 
 binary. For non `#[no_std]` targets the optimizer cannot remove them because the binary is statically linked to the
-Rust standard libary which contains those functions. We wanted this tool to be able to prove the abscence
-of paths to `panic!` in Rust binaries that contain the standard libary. See the [Results](#Results) section to see 
+Rust standard library which contains those functions. We wanted this tool to be able to prove the abscence
+of paths to `panic!` in Rust binaries that contain the standard library. See the [Results](#Results) section to see 
 why this turned out to be not so easy. 
 
 ## Who
