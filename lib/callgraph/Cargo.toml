@@ -13,7 +13,7 @@ workspace = "../.."
 [dependencies]
 addr2line = "0.6.0"
 petgraph = "0.4.12"
-object = "0.7.0"
+object = "0.9.0"
 goblin = "0.0.13"
 gimli = "0.15.0"
 capstone = { git = "https://github.com/capstone-rust/capstone-rs.git", rev = "dc10578aa27414afc93f0a87959b2f0c22dc66c3" }
