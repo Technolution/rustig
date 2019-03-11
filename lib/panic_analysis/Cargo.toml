@@ -13,7 +13,7 @@ workspace = "../.."
 [dependencies]
 callgraph = { path = "../../lib/callgraph" }
 gimli = "0.15.0"
-fallible-iterator = "0.1.2"
+fallible-iterator = "0.2.0"
 error-chain = "0.12.0"
 
 [dev-dependencies]
