@@ -19,7 +19,7 @@ gimli = "0.15.0"
 capstone = { git = "https://github.com/capstone-rust/capstone-rs.git", rev = "dc10578aa27414afc93f0a87959b2f0c22dc66c3" }
 elf = "0.0.10"
 error-chain = "0.12.0"
-fallible-iterator = "0.1.2"
+fallible-iterator = "0.2.0"
 byteorder = "1.2.3"
 
 [dev-dependencies]
