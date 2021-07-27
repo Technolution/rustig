@@ -10,7 +10,7 @@ authors = [
 ]
 
 [dependencies]
-gimli = "0.15.0"
+gimli = "0.25.0"
 object = "0.7.0"
 elf = "0.0.10"
 capstone = { git = "https://github.com/capstone-rust/capstone-rs.git", rev = "dc10578aa27414afc93f0a87959b2f0c22dc66c3" }
